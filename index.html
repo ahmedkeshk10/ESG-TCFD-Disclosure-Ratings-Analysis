@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحليل تقييمات الإفصاحات - ESG &amp; TCFD</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+/* Design System */
+:root {
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-base: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Sustainability colors */
+  --color-excellent: #2D5F3F;
+  --color-very-good: #4A8B5C;
+  --color-good: #7CB342;
+  --color-acceptable: #FFA726;
+  --color-needs-improvement: #E53935;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(167, 169, 169, 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-border: rgba(119, 124, 124, 0.3);
+    --color-card-border: rgba(119, 124, 124, 0.2);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-24);
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-32);
+  padding-bottom: var(--space-24);
+  border-bottom: 1px solid var(--color-border);
+  animation: fadeIn 0.5s ease;
+}
+
+.header h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.lang-toggle {
+  padding: var(--space-8) var(--space-16);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.lang-toggle:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: var(--space-8);
+  margin-bottom: var(--space-32);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.tab-btn {
+  padding: var(--space-12) var(--space-24);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  position: relative;
+  bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: var(--color-text);
+  background: rgba(var(--color-teal-500-rgb), 0.05);
+}
+
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-16);
+  margin-bottom: var(--space-32);
+}
+
+.summary-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+  animation: pulse 2s ease infinite;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-card .icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-8);
+}
+
+.summary-card .value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-8);
+}
+
+.summary-card .label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Sections */
+.section {
+  margin-bottom: var(--space-32);
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-24);
+  padding-bottom: var(--space-16);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.section-header .icon {
+  font-size: var(--font-size-2xl);
+}
+
+.section-header h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.section-header .count {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+}
+
+.chart-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 350px;
+}
+
+.chart-wrapper canvas {
+  max-height: 100%;
+}
+
+/* Comparison Section */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+}
+
+.comparison-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+}
+
+.comparison-card h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--space-16);
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .tabs {
+    flex-direction: column;
+    border-bottom: none;
+  }
+
+  .tab-btn {
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+
+  .tab-btn.active {
+    border-left-color: var(--color-primary);
+    border-bottom-color: transparent;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* RTL/LTR Support */
+[dir="rtl"] .section-header,
+[dir="rtl"] .header {
+  flex-direction: row-reverse;
+}
+
+[dir="ltr"] .section-header,
+[dir="ltr"] .header {
+  flex-direction: row;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 id="mainTitle">تحليل تقييمات الإفصاحات - ESG &amp; TCFD</h1>
+            <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()">English</button>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('esg')" id="tabEsg">تحليل ESG</button>
+            <button class="tab-btn" onclick="switchTab('tcfd')" id="tabTcfd">تحليل TCFD</button>
+            <button class="tab-btn" onclick="switchTab('comparison')" id="tabComparison">مقارنة</button>
+        </div>
+
+        <!-- ESG Tab -->
+        <div id="esgTab" class="tab-content active">
+            <div class="summary-cards" id="esgSummary"></div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">🏛️</span>
+                    <h2 id="esgNonListedTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h2>
+                    <span class="count">(149)</span>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title" id="esgNonListedPieTitle">التوزيع العام للتقييمات</div>
+                        <div class="chart-wrapper">
+                            <canvas id="esgNonListedPie"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="esgSectorsBarTitle">التوزيع حسب القطاع المالي</div>
+                        <div class="chart-wrapper">
+                            <canvas id="esgSectorsBar"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">📊</span>
+                    <h2 id="esgListedTitle">الشركات المقيدة بالبورصة</h2>
+                    <span class="count">(224)</span>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title" id="esgListedPieTitle">التوزيع العام للتقييمات</div>
+                        <div class="chart-wrapper">
+                            <canvas id="esgListedPie"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="esgListedNonBankTitle">الشركات المالية غير المصرفية</div>
+                        <div class="chart-wrapper">
+                            <canvas id="esgListedNonBank"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="esgListedOtherTitle">القطاعات الأخرى</div>
+                        <div class="chart-wrapper">
+                            <canvas id="esgListedOther"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TCFD Tab -->
+        <div id="tcfdTab" class="tab-content">
+            <div class="summary-cards" id="tcfdSummary"></div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">🏛️</span>
+                    <h2 id="tcfdNonListedTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h2>
+                    <span class="count">(47)</span>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdNonListedPieTitle">التوزيع العام للتقييمات</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdNonListedPie"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdCapitalMarketTitle">قطاع سوق المال 📈</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdCapitalMarket"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdInsuranceTitle">قطاع التأمين 🛡️</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdInsurance"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdFinancingSectorsTitle">قطاعات التمويل المجمعة</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdFinancingSectors"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">📊</span>
+                    <h2 id="tcfdListedTitle">الشركات المقيدة بالبورصة</h2>
+                    <span class="count">(122)</span>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdListedNonBankTitle">الشركات المالية غير المصرفية</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdListedNonBank"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdListedOtherTitle">القطاعات الأخرى</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdListedOther"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Tab -->
+        <div id="comparisonTab" class="tab-content">
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3 id="comparisonTotalTitle">إجمالي الشركات</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="comparisonTotal"></canvas>
+                    </div>
+                </div>
+                <div class="comparison-card">
+                    <h3 id="comparisonRatingsTitle">توزيع التقييمات</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="comparisonRatings"></canvas>
+                    </div>
+                </div>
+                <div class="comparison-card">
+                    <h3 id="comparisonPercentTitle">النسب المئوية</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="comparisonPercent"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
