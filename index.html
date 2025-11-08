@@ -109,12 +109,123 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(45deg, 
+    rgba(45, 166, 178, 0.05) 0%, 
+    rgba(124, 179, 66, 0.05) 25%,
+    rgba(33, 128, 141, 0.05) 50%,
+    rgba(141, 202, 77, 0.05) 75%,
+    rgba(45, 166, 178, 0.05) 100%);
+  background-size: 400% 400%;
+  animation: gradientFlow 15s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.floating-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: float 20s infinite ease-in-out;
+}
+
+.particle:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(45, 166, 178, 0.3), transparent);
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.particle:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(124, 179, 66, 0.3), transparent);
+  top: 60%;
+  left: 80%;
+  animation-delay: 3s;
+  animation-duration: 20s;
+}
+
+.particle:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(33, 128, 141, 0.2), transparent);
+  top: 30%;
+  left: 50%;
+  animation-delay: 5s;
+  animation-duration: 30s;
+}
+
+.particle:nth-child(4) {
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle, rgba(141, 202, 77, 0.3), transparent);
+  top: 70%;
+  left: 20%;
+  animation-delay: 2s;
+  animation-duration: 22s;
+}
+
+.particle:nth-child(5) {
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, rgba(45, 166, 178, 0.25), transparent);
+  top: 50%;
+  left: 70%;
+  animation-delay: 7s;
+  animation-duration: 28s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(30px, -50px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-20px, -80px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-40px, -30px) rotate(270deg);
+  }
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--space-24);
+  position: relative;
+  z-index: 1;
 }
 
 /* Header */
@@ -271,9 +382,16 @@ body {
 
 /* Charts Grid */
 .charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: var(--space-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  margin-top: var(--space-24);
+}
+
+.charts-grid-single {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
   margin-top: var(--space-24);
 }
 
@@ -295,7 +413,8 @@ body {
 
 .chart-wrapper {
   position: relative;
-  height: 350px;
+  height: 400px;
+  width: 100%;
 }
 
 .chart-wrapper canvas {
@@ -303,27 +422,49 @@ body {
 }
 
 /* Comparison Section */
-.comparison-grid {
+.comparison-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-24);
-  margin-top: var(--space-24);
+  margin-bottom: var(--space-32);
+}
+
+.comparison-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
 }
 
 .comparison-card {
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-24);
+  padding: var(--space-20);
   box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: all var(--duration-normal) var(--ease-standard);
 }
 
-.comparison-card h3 {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--space-16);
-  color: var(--color-text);
-  text-align: center;
+.comparison-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.comparison-card .icon {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-8);
+}
+
+.comparison-card .value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-8);
+}
+
+.comparison-card .label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
 }
 
 /* Animations */
@@ -345,6 +486,53 @@ body {
   50% {
     transform: scale(1.02);
   }
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  margin-top: var(--space-24);
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-12) var(--space-16);
+  text-align: center;
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.data-table th {
+  background: rgba(var(--color-teal-500-rgb), 0.1);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover {
+  background: rgba(var(--color-teal-500-rgb), 0.05);
+}
+
+.data-table td:first-child {
+  text-align: right;
+  font-weight: var(--font-weight-medium);
+}
+
+[dir="ltr"] .data-table td:first-child {
+  text-align: left;
+}
+
+.table-container {
+  margin-top: var(--space-32);
+  overflow-x: auto;
 }
 
 /* Responsive */
@@ -396,6 +584,13 @@ body {
     </style>
 </head>
 <body>
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
     <div class="container">
         <!-- Header -->
         <header class="header">
@@ -420,7 +615,7 @@ body {
                     <h2 id="esgNonListedTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h2>
                     <span class="count">(149)</span>
                 </div>
-                <div class="charts-grid">
+                <div class="charts-grid-single">
                     <div class="chart-container">
                         <div class="chart-title" id="esgNonListedPieTitle">التوزيع العام للتقييمات</div>
                         <div class="chart-wrapper">
@@ -442,7 +637,7 @@ body {
                     <h2 id="esgListedTitle">الشركات المقيدة بالبورصة</h2>
                     <span class="count">(224)</span>
                 </div>
-                <div class="charts-grid">
+                <div class="charts-grid-single">
                     <div class="chart-container">
                         <div class="chart-title" id="esgListedPieTitle">التوزيع العام للتقييمات</div>
                         <div class="chart-wrapper">
@@ -463,6 +658,21 @@ body {
                     </div>
                 </div>
             </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">📋</span>
+                    <h2 id="esgTablesTitle">الجداول التفصيلية</h2>
+                </div>
+                <div class="table-container">
+                    <h3 style="margin-bottom: var(--space-16); color: var(--color-text);" id="esgNonListedTableTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h3>
+                    <table class="data-table" id="esgNonListedTable"></table>
+                </div>
+                <div class="table-container">
+                    <h3 style="margin-bottom: var(--space-16); color: var(--color-text);" id="esgListedTableTitle">الشركات المقيدة بالبورصة</h3>
+                    <table class="data-table" id="esgListedTable"></table>
+                </div>
+            </div>
         </div>
 
         <!-- TCFD Tab -->
@@ -475,7 +685,7 @@ body {
                     <h2 id="tcfdNonListedTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h2>
                     <span class="count">(47)</span>
                 </div>
-                <div class="charts-grid">
+                <div class="charts-grid-single">
                     <div class="chart-container">
                         <div class="chart-title" id="tcfdNonListedPieTitle">التوزيع العام للتقييمات</div>
                         <div class="chart-wrapper">
@@ -483,21 +693,9 @@ body {
                         </div>
                     </div>
                     <div class="chart-container">
-                        <div class="chart-title" id="tcfdCapitalMarketTitle">قطاع سوق المال 📈</div>
+                        <div class="chart-title" id="tcfdAllSectorsTitle">التوزيع حسب القطاع المالي</div>
                         <div class="chart-wrapper">
-                            <canvas id="tcfdCapitalMarket"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-title" id="tcfdInsuranceTitle">قطاع التأمين 🛡️</div>
-                        <div class="chart-wrapper">
-                            <canvas id="tcfdInsurance"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <div class="chart-title" id="tcfdFinancingSectorsTitle">قطاعات التمويل المجمعة</div>
-                        <div class="chart-wrapper">
-                            <canvas id="tcfdFinancingSectors"></canvas>
+                            <canvas id="tcfdAllSectors"></canvas>
                         </div>
                     </div>
                 </div>
@@ -509,7 +707,13 @@ body {
                     <h2 id="tcfdListedTitle">الشركات المقيدة بالبورصة</h2>
                     <span class="count">(122)</span>
                 </div>
-                <div class="charts-grid">
+                <div class="charts-grid-single">
+                    <div class="chart-container">
+                        <div class="chart-title" id="tcfdListedPieTitle">التوزيع العام للتقييمات</div>
+                        <div class="chart-wrapper">
+                            <canvas id="tcfdListedPie"></canvas>
+                        </div>
+                    </div>
                     <div class="chart-container">
                         <div class="chart-title" id="tcfdListedNonBankTitle">الشركات المالية غير المصرفية</div>
                         <div class="chart-wrapper">
@@ -524,27 +728,41 @@ body {
                     </div>
                 </div>
             </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <span class="icon">📋</span>
+                    <h2 id="tcfdTablesTitle">الجداول التفصيلية</h2>
+                </div>
+                <div class="table-container">
+                    <h3 style="margin-bottom: var(--space-16); color: var(--color-text);" id="tcfdNonListedTableTitle">الشركات المالية غير المصرفية غير مقيدة بالبورصة</h3>
+                    <table class="data-table" id="tcfdNonListedTable"></table>
+                </div>
+                <div class="table-container">
+                    <h3 style="margin-bottom: var(--space-16); color: var(--color-text);" id="tcfdListedTableTitle">الشركات المقيدة بالبورصة</h3>
+                    <table class="data-table" id="tcfdListedTable"></table>
+                </div>
+            </div>
         </div>
 
         <!-- Comparison Tab -->
         <div id="comparisonTab" class="tab-content">
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <h3 id="comparisonTotalTitle">إجمالي الشركات</h3>
+            <div class="comparison-layout">
+                <div class="comparison-column" id="tcfdColumn"></div>
+                <div class="comparison-column" id="esgColumn"></div>
+            </div>
+            
+            <div class="charts-grid-single">
+                <div class="chart-container">
+                    <div class="chart-title" id="comparisonNonListedTitle">مقارنة الشركات غير المقيدة بالبورصة</div>
                     <div class="chart-wrapper">
-                        <canvas id="comparisonTotal"></canvas>
+                        <canvas id="comparisonNonListed"></canvas>
                     </div>
                 </div>
-                <div class="comparison-card">
-                    <h3 id="comparisonRatingsTitle">توزيع التقييمات</h3>
+                <div class="chart-container">
+                    <div class="chart-title" id="comparisonListedTitle">مقارنة الشركات المقيدة بالبورصة</div>
                     <div class="chart-wrapper">
-                        <canvas id="comparisonRatings"></canvas>
-                    </div>
-                </div>
-                <div class="comparison-card">
-                    <h3 id="comparisonPercentTitle">النسب المئوية</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="comparisonPercent"></canvas>
+                        <canvas id="comparisonListed"></canvas>
                     </div>
                 </div>
             </div>

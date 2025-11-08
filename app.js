@@ -16,7 +16,7 @@ const esgData = {
     nonListedSectors: [
         { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [2, 6, 2, 3, 5] },
         { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [4, 1, 5, 2, 6] },
-        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Real Estate Finance', icon: '🏠', ratings: [2, 2, 4, 3, 5] },
+        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [2, 2, 4, 3, 5] },
         { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [3, 5, 3, 6, 5] },
         { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [2, 2, 6, 3, 2] },
         { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [3, 3, 4, 6, 2] },
@@ -44,31 +44,38 @@ const tcfdData = {
         acceptable: 16,
         needsImprovement: 20
     },
-    capitalMarket: [1, 1, 0, 1, 1],
-    insurance: [0, 1, 1, 1, 1],
-    financingSectors: [
-        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Real Estate Finance', icon: '🏠', ratings: [1, 0, 1, 1, 1] },
+    allSectors: [
+        { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [1, 1, 0, 1, 1] },
+        { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [0, 1, 1, 1, 1] },
+        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [1, 0, 1, 1, 1] },
         { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [1, 1, 1, 1, 1] },
         { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [0, 1, 1, 0, 1] },
         { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [1, 1, 1, 1, 0] },
         { nameAr: 'قطاع التمويل متناهي الصغر', nameEn: 'Microfinance', icon: '🤝', ratings: [3, 3, 4, 3, 5] }
     ],
     listedTotal: 122,
+    listedRatings: {
+        excellent: 7,
+        veryGood: 15,
+        good: 20,
+        acceptable: 30,
+        needsImprovement: 50
+    },
     listedNonBanking: [2, 5, 5, 10, 20],
     listedOtherSectors: [5, 10, 15, 20, 30]
 };
 
 const ratingLabels = {
     ar: ['ممتاز', 'جيد جدًا', 'جيد', 'مقبول', 'يحتاج إلى تحسين'],
-    en: ['Excellent', 'Very Good', 'Good', 'Acceptable', 'Needs Improvement']
+    en: ['Excellent', 'Very Good', 'Good', 'Fair', 'Needs Improvement']
 };
 
 const colors = {
-    excellent: '#2D5F3F',
-    veryGood: '#4A8B5C',
-    good: '#7CB342',
-    acceptable: '#FFA726',
-    needsImprovement: '#E53935'
+    excellent: '#002060',
+    veryGood: '#8DCA4D',
+    good: '#005D87',
+    acceptable: '#BD8D00',
+    needsImprovement: '#7C0000'
 };
 
 const ratingColors = [colors.excellent, colors.veryGood, colors.good, colors.acceptable, colors.needsImprovement];
@@ -85,6 +92,11 @@ const translations = {
         good: 'جيد',
         acceptable: 'مقبول',
         needsImprovement: 'يحتاج إلى تحسين',
+        detailedTables: 'الجداول التفصيلية',
+        esgNonListedTableTitle: 'الشركات المالية غير المصرفية غير مقيدة بالبورصة',
+        esgListedTableTitle: 'الشركات المقيدة بالبورصة',
+        tcfdNonListedTableTitle: 'الشركات المالية غير المصرفية غير مقيدة بالبورصة',
+        tcfdListedTableTitle: 'الشركات المقيدة بالبورصة',
         esgNonListedTitle: 'الشركات المالية غير المصرفية غير مقيدة بالبورصة',
         esgListedTitle: 'الشركات المقيدة بالبورصة',
         tcfdNonListedTitle: 'الشركات المالية غير المصرفية غير مقيدة بالبورصة',
@@ -95,14 +107,13 @@ const translations = {
         esgListedNonBankTitle: 'الشركات المالية غير المصرفية',
         esgListedOtherTitle: 'القطاعات الأخرى',
         tcfdNonListedPieTitle: 'التوزيع العام للتقييمات',
-        tcfdCapitalMarketTitle: 'قطاع سوق المال 📈',
-        tcfdInsuranceTitle: 'قطاع التأمين 🛡️',
-        tcfdFinancingSectorsTitle: 'قطاعات التمويل المجمعة',
+        tcfdAllSectorsTitle: 'التوزيع حسب القطاع المالي',
+        tcfdListedPieTitle: 'التوزيع العام للتقييمات',
         tcfdListedNonBankTitle: 'الشركات المالية غير المصرفية',
         tcfdListedOtherTitle: 'القطاعات الأخرى',
-        comparisonTotalTitle: 'إجمالي الشركات',
-        comparisonRatingsTitle: 'توزيع التقييمات',
-        comparisonPercentTitle: 'النسب المئوية'
+        comparisonTotalTitle: 'مقارنة إجمالي الشركات',
+        comparisonNonListedTitle: 'مقارنة الشركات غير المقيدة بالبورصة',
+        comparisonListedTitle: 'مقارنة الشركات المقيدة بالبورصة'
     },
     en: {
         mainTitle: 'ESG & TCFD Disclosure Ratings Analysis',
@@ -113,8 +124,13 @@ const translations = {
         excellent: 'Excellent',
         veryGood: 'Very Good',
         good: 'Good',
-        acceptable: 'Acceptable',
+        acceptable: 'Fair',
         needsImprovement: 'Needs Improvement',
+        detailedTables: 'Detailed Tables',
+        esgNonListedTableTitle: 'Non-Listed Non-Banking Financial Companies',
+        esgListedTableTitle: 'Listed Companies',
+        tcfdNonListedTableTitle: 'Non-Listed Non-Banking Financial Companies',
+        tcfdListedTableTitle: 'Listed Companies',
         esgNonListedTitle: 'Non-Listed Non-Banking Financial Companies',
         esgListedTitle: 'Listed Companies',
         tcfdNonListedTitle: 'Non-Listed Non-Banking Financial Companies',
@@ -125,14 +141,13 @@ const translations = {
         esgListedNonBankTitle: 'Non-Banking Financial Companies',
         esgListedOtherTitle: 'Other Sectors',
         tcfdNonListedPieTitle: 'Overall Rating Distribution',
-        tcfdCapitalMarketTitle: 'Capital Market Sector 📈',
-        tcfdInsuranceTitle: 'Insurance Sector 🛡️',
-        tcfdFinancingSectorsTitle: 'Combined Financing Sectors',
+        tcfdAllSectorsTitle: 'Distribution by Financial Sector',
+        tcfdListedPieTitle: 'Overall Rating Distribution',
         tcfdListedNonBankTitle: 'Non-Banking Financial Companies',
         tcfdListedOtherTitle: 'Other Sectors',
-        comparisonTotalTitle: 'Total Companies',
-        comparisonRatingsTitle: 'Rating Distribution',
-        comparisonPercentTitle: 'Percentages'
+        comparisonTotalTitle: 'Total Companies Comparison',
+        comparisonNonListedTitle: 'Non-Listed Companies Comparison',
+        comparisonListedTitle: 'Listed Companies Comparison'
     }
 };
 
@@ -149,9 +164,12 @@ const ratingIcons = {
 function init() {
     createESGSummary();
     createTCFDSummary();
+    createComparisonSummary();
     createESGCharts();
     createTCFDCharts();
     createComparisonCharts();
+    createESGTables();
+    createTCFDTables();
 }
 
 // Language toggle
@@ -186,18 +204,37 @@ function updateTexts() {
     document.getElementById('esgListedNonBankTitle').textContent = t.esgListedNonBankTitle;
     document.getElementById('esgListedOtherTitle').textContent = t.esgListedOtherTitle;
     document.getElementById('tcfdNonListedPieTitle').textContent = t.tcfdNonListedPieTitle;
-    document.getElementById('tcfdCapitalMarketTitle').textContent = t.tcfdCapitalMarketTitle;
-    document.getElementById('tcfdInsuranceTitle').textContent = t.tcfdInsuranceTitle;
-    document.getElementById('tcfdFinancingSectorsTitle').textContent = t.tcfdFinancingSectorsTitle;
+    document.getElementById('tcfdAllSectorsTitle').textContent = t.tcfdAllSectorsTitle;
+    document.getElementById('tcfdListedPieTitle').textContent = t.tcfdListedPieTitle;
     document.getElementById('tcfdListedNonBankTitle').textContent = t.tcfdListedNonBankTitle;
     document.getElementById('tcfdListedOtherTitle').textContent = t.tcfdListedOtherTitle;
-    document.getElementById('comparisonTotalTitle').textContent = t.comparisonTotalTitle;
-    document.getElementById('comparisonRatingsTitle').textContent = t.comparisonRatingsTitle;
-    document.getElementById('comparisonPercentTitle').textContent = t.comparisonPercentTitle;
+    document.getElementById('comparisonNonListedTitle').textContent = t.comparisonNonListedTitle;
+    document.getElementById('comparisonListedTitle').textContent = t.comparisonListedTitle;
+    
+    // Update table section titles
+    const esgTablesTitle = document.getElementById('esgTablesTitle');
+    const tcfdTablesTitle = document.getElementById('tcfdTablesTitle');
+    if (esgTablesTitle) esgTablesTitle.textContent = t.detailedTables;
+    if (tcfdTablesTitle) tcfdTablesTitle.textContent = t.detailedTables;
+    
+    const esgNonListedTableTitle = document.getElementById('esgNonListedTableTitle');
+    const esgListedTableTitle = document.getElementById('esgListedTableTitle');
+    const tcfdNonListedTableTitle = document.getElementById('tcfdNonListedTableTitle');
+    const tcfdListedTableTitle = document.getElementById('tcfdListedTableTitle');
+    
+    if (esgNonListedTableTitle) esgNonListedTableTitle.textContent = t.esgNonListedTableTitle;
+    if (esgListedTableTitle) esgListedTableTitle.textContent = t.esgListedTableTitle;
+    if (tcfdNonListedTableTitle) tcfdNonListedTableTitle.textContent = t.tcfdNonListedTableTitle;
+    if (tcfdListedTableTitle) tcfdListedTableTitle.textContent = t.tcfdListedTableTitle;
     
     // Update summary cards
     createESGSummary();
     createTCFDSummary();
+    createComparisonSummary();
+    
+    // Update tables
+    createESGTables();
+    createTCFDTables();
 }
 
 // Tab switching
@@ -251,7 +288,7 @@ function createTCFDSummary() {
         { label: t.totalCompanies, value: tcfdData.totalCompanies, icon: ratingIcons.total, color: '#1976D2' },
         { label: t.excellent, value: 7, icon: ratingIcons.excellent, color: colors.excellent },
         { label: t.veryGood, value: 16, icon: ratingIcons.veryGood, color: colors.veryGood },
-        { label: t.good, value: 31, icon: ratingIcons.good, color: colors.good },
+        { label: t.good, value: 26, icon: ratingIcons.good, color: colors.good },
         { label: t.acceptable, value: 46, icon: ratingIcons.acceptable, color: colors.acceptable },
         { label: t.needsImprovement, value: 70, icon: ratingIcons.needsImprovement, color: colors.needsImprovement }
     ];
@@ -261,6 +298,45 @@ function createTCFDSummary() {
             <div class="icon">${item.icon}</div>
             <div class="value" style="color: ${item.color}">${item.value}</div>
             <div class="label">${item.label}</div>
+        </div>
+    `).join('');
+}
+
+// Comparison Summary
+function createComparisonSummary() {
+    const esgContainer = document.getElementById('esgColumn');
+    const tcfdContainer = document.getElementById('tcfdColumn');
+    const t = translations[currentLang];
+    
+    const esgData = [
+        { label: t.excellent, value: 14, icon: '⭐', color: colors.excellent },
+        { label: t.veryGood, value: 49, icon: '✨', color: colors.veryGood },
+        { label: t.good, value: 70, icon: '👍', color: colors.good },
+        { label: t.acceptable, value: 90, icon: '✓', color: colors.acceptable },
+        { label: t.needsImprovement, value: 150, icon: '⚠️', color: colors.needsImprovement }
+    ];
+    
+    const tcfdData = [
+        { label: t.excellent, value: 7, icon: '⭐', color: colors.excellent },
+        { label: t.veryGood, value: 16, icon: '✨', color: colors.veryGood },
+        { label: t.good, value: 26, icon: '👍', color: colors.good },
+        { label: t.acceptable, value: 46, icon: '✓', color: colors.acceptable },
+        { label: t.needsImprovement, value: 70, icon: '⚠️', color: colors.needsImprovement }
+    ];
+    
+    esgContainer.innerHTML = esgData.map(item => `
+        <div class="comparison-card">
+            <div class="icon">${item.icon}</div>
+            <div class="value" style="color: ${item.color}">${item.value}</div>
+            <div class="label">ESG - ${item.label}</div>
+        </div>
+    `).join('');
+    
+    tcfdContainer.innerHTML = tcfdData.map(item => `
+        <div class="comparison-card">
+            <div class="icon">${item.icon}</div>
+            <div class="value" style="color: ${item.color}">${item.value}</div>
+            <div class="label">TCFD - ${item.label}</div>
         </div>
     `).join('');
 }
@@ -289,7 +365,12 @@ function createESGCharts() {
             plugins: {
                 legend: {
                     position: currentLang === 'ar' ? 'right' : 'left',
-                    rtl: currentLang === 'ar'
+                    rtl: currentLang === 'ar',
+                    labels: {
+                        font: {
+                            size: 16
+                        }
+                    }
                 },
                 tooltip: {
                     callbacks: {
@@ -368,7 +449,12 @@ function createESGCharts() {
             plugins: {
                 legend: {
                     position: currentLang === 'ar' ? 'right' : 'left',
-                    rtl: currentLang === 'ar'
+                    rtl: currentLang === 'ar',
+                    labels: {
+                        font: {
+                            size: 16
+                        }
+                    }
                 },
                 tooltip: {
                     callbacks: {
@@ -446,6 +532,162 @@ function createESGCharts() {
     });
 }
 
+// ESG Tables
+function createESGTables() {
+    const t = translations[currentLang];
+    
+    // Non-listed table
+    const nonListedTable = document.getElementById('esgNonListedTable');
+    let nonListedHTML = `
+        <thead>
+            <tr>
+                <th>${currentLang === 'ar' ? 'القطاع' : 'Sector'}</th>
+                <th>${t.excellent}</th>
+                <th>${t.veryGood}</th>
+                <th>${t.good}</th>
+                <th>${t.acceptable}</th>
+                <th>${t.needsImprovement}</th>
+                <th>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    esgData.nonListedSectors.forEach(sector => {
+        const total = sector.ratings.reduce((a, b) => a + b, 0);
+        const name = currentLang === 'ar' ? `${sector.icon} ${sector.nameAr}` : `${sector.icon} ${sector.nameEn}`;
+        nonListedHTML += `
+            <tr>
+                <td>${name}</td>
+                <td>${sector.ratings[0]}</td>
+                <td>${sector.ratings[1]}</td>
+                <td>${sector.ratings[2]}</td>
+                <td>${sector.ratings[3]}</td>
+                <td>${sector.ratings[4]}</td>
+                <td><strong>${total}</strong></td>
+            </tr>
+        `;
+    });
+    
+    nonListedHTML += '</tbody>';
+    nonListedTable.innerHTML = nonListedHTML;
+    
+    // Listed table
+    const listedTable = document.getElementById('esgListedTable');
+    const listedHTML = `
+        <thead>
+            <tr>
+                <th>${currentLang === 'ar' ? 'القطاع' : 'Sector'}</th>
+                <th>${t.excellent}</th>
+                <th>${t.veryGood}</th>
+                <th>${t.good}</th>
+                <th>${t.acceptable}</th>
+                <th>${t.needsImprovement}</th>
+                <th>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>${currentLang === 'ar' ? 'الشركات المالية غير المصرفية' : 'Non-Banking Financial Companies'}</td>
+                <td>${esgData.listedNonBanking[0]}</td>
+                <td>${esgData.listedNonBanking[1]}</td>
+                <td>${esgData.listedNonBanking[2]}</td>
+                <td>${esgData.listedNonBanking[3]}</td>
+                <td>${esgData.listedNonBanking[4]}</td>
+                <td><strong>${esgData.listedNonBanking.reduce((a, b) => a + b, 0)}</strong></td>
+            </tr>
+            <tr>
+                <td>${currentLang === 'ar' ? 'القطاعات الأخرى' : 'Other Sectors'}</td>
+                <td>${esgData.listedOtherSectors[0]}</td>
+                <td>${esgData.listedOtherSectors[1]}</td>
+                <td>${esgData.listedOtherSectors[2]}</td>
+                <td>${esgData.listedOtherSectors[3]}</td>
+                <td>${esgData.listedOtherSectors[4]}</td>
+                <td><strong>${esgData.listedOtherSectors.reduce((a, b) => a + b, 0)}</strong></td>
+            </tr>
+        </tbody>
+    `;
+    listedTable.innerHTML = listedHTML;
+}
+
+// TCFD Tables
+function createTCFDTables() {
+    const t = translations[currentLang];
+    
+    // Non-listed table
+    const nonListedTable = document.getElementById('tcfdNonListedTable');
+    let nonListedHTML = `
+        <thead>
+            <tr>
+                <th>${currentLang === 'ar' ? 'القطاع' : 'Sector'}</th>
+                <th>${t.excellent}</th>
+                <th>${t.veryGood}</th>
+                <th>${t.good}</th>
+                <th>${t.acceptable}</th>
+                <th>${t.needsImprovement}</th>
+                <th>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</th>
+            </tr>
+        </thead>
+        <tbody>
+    `;
+    
+    tcfdData.allSectors.forEach(sector => {
+        const total = sector.ratings.reduce((a, b) => a + b, 0);
+        const name = currentLang === 'ar' ? `${sector.icon} ${sector.nameAr}` : `${sector.icon} ${sector.nameEn}`;
+        nonListedHTML += `
+            <tr>
+                <td>${name}</td>
+                <td>${sector.ratings[0]}</td>
+                <td>${sector.ratings[1]}</td>
+                <td>${sector.ratings[2]}</td>
+                <td>${sector.ratings[3]}</td>
+                <td>${sector.ratings[4]}</td>
+                <td><strong>${total}</strong></td>
+            </tr>
+        `;
+    });
+    
+    nonListedHTML += '</tbody>';
+    nonListedTable.innerHTML = nonListedHTML;
+    
+    // Listed table
+    const listedTable = document.getElementById('tcfdListedTable');
+    const listedHTML = `
+        <thead>
+            <tr>
+                <th>${currentLang === 'ar' ? 'القطاع' : 'Sector'}</th>
+                <th>${t.excellent}</th>
+                <th>${t.veryGood}</th>
+                <th>${t.good}</th>
+                <th>${t.acceptable}</th>
+                <th>${t.needsImprovement}</th>
+                <th>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>${currentLang === 'ar' ? 'الشركات المالية غير المصرفية' : 'Non-Banking Financial Companies'}</td>
+                <td>${tcfdData.listedNonBanking[0]}</td>
+                <td>${tcfdData.listedNonBanking[1]}</td>
+                <td>${tcfdData.listedNonBanking[2]}</td>
+                <td>${tcfdData.listedNonBanking[3]}</td>
+                <td>${tcfdData.listedNonBanking[4]}</td>
+                <td><strong>${tcfdData.listedNonBanking.reduce((a, b) => a + b, 0)}</strong></td>
+            </tr>
+            <tr>
+                <td>${currentLang === 'ar' ? 'القطاعات الأخرى' : 'Other Sectors'}</td>
+                <td>${tcfdData.listedOtherSectors[0]}</td>
+                <td>${tcfdData.listedOtherSectors[1]}</td>
+                <td>${tcfdData.listedOtherSectors[2]}</td>
+                <td>${tcfdData.listedOtherSectors[3]}</td>
+                <td>${tcfdData.listedOtherSectors[4]}</td>
+                <td><strong>${tcfdData.listedOtherSectors.reduce((a, b) => a + b, 0)}</strong></td>
+            </tr>
+        </tbody>
+    `;
+    listedTable.innerHTML = listedHTML;
+}
+
 // TCFD Charts
 function createTCFDCharts() {
     // Non-listed pie chart
@@ -470,7 +712,12 @@ function createTCFDCharts() {
             plugins: {
                 legend: {
                     position: currentLang === 'ar' ? 'right' : 'left',
-                    rtl: currentLang === 'ar'
+                    rtl: currentLang === 'ar',
+                    labels: {
+                        font: {
+                            size: 16
+                        }
+                    }
                 },
                 tooltip: {
                     callbacks: {
@@ -491,75 +738,19 @@ function createTCFDCharts() {
         }
     });
     
-    // Capital Market bar chart
-    charts.tcfdCapitalMarket = new Chart(document.getElementById('tcfdCapitalMarket'), {
-        type: 'bar',
-        data: {
-            labels: ratingLabels[currentLang],
-            datasets: [{
-                label: currentLang === 'ar' ? 'عدد الشركات' : 'Number of Companies',
-                data: tcfdData.capitalMarket,
-                backgroundColor: ratingColors
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    reverse: currentLang === 'ar'
-                },
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    
-    // Insurance bar chart
-    charts.tcfdInsurance = new Chart(document.getElementById('tcfdInsurance'), {
-        type: 'bar',
-        data: {
-            labels: ratingLabels[currentLang],
-            datasets: [{
-                label: currentLang === 'ar' ? 'عدد الشركات' : 'Number of Companies',
-                data: tcfdData.insurance,
-                backgroundColor: ratingColors
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                x: {
-                    reverse: currentLang === 'ar'
-                },
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    
-    // Financing sectors grouped bar chart
-    const financingLabels = tcfdData.financingSectors.map(s => currentLang === 'ar' ? s.nameAr : s.nameEn);
-    const financingDatasets = ratingLabels[currentLang].map((label, idx) => ({
+    // All sectors grouped bar chart
+    const allSectorsLabels = tcfdData.allSectors.map(s => currentLang === 'ar' ? s.nameAr : s.nameEn);
+    const allSectorsDatasets = ratingLabels[currentLang].map((label, idx) => ({
         label: label,
-        data: tcfdData.financingSectors.map(s => s.ratings[idx]),
+        data: tcfdData.allSectors.map(s => s.ratings[idx]),
         backgroundColor: ratingColors[idx]
     }));
     
-    charts.tcfdFinancingSectors = new Chart(document.getElementById('tcfdFinancingSectors'), {
+    charts.tcfdAllSectors = new Chart(document.getElementById('tcfdAllSectors'), {
         type: 'bar',
         data: {
-            labels: financingLabels,
-            datasets: financingDatasets
+            labels: allSectorsLabels,
+            datasets: allSectorsDatasets
         },
         options: {
             responsive: true,
@@ -579,6 +770,54 @@ function createTCFDCharts() {
                     stacked: false,
                     beginAtZero: true
                 }
+            }
+        }
+    });
+    
+    // Listed pie chart
+    charts.tcfdListedPie = new Chart(document.getElementById('tcfdListedPie'), {
+        type: 'pie',
+        data: {
+            labels: ratingLabels[currentLang],
+            datasets: [{
+                data: [
+                    tcfdData.listedRatings.excellent,
+                    tcfdData.listedRatings.veryGood,
+                    tcfdData.listedRatings.good,
+                    tcfdData.listedRatings.acceptable,
+                    tcfdData.listedRatings.needsImprovement
+                ],
+                backgroundColor: ratingColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: currentLang === 'ar' ? 'right' : 'left',
+                    rtl: currentLang === 'ar',
+                    labels: {
+                        font: {
+                            size: 16
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true
             }
         }
     });
@@ -642,62 +881,27 @@ function createTCFDCharts() {
 
 // Comparison Charts
 function createComparisonCharts() {
-    // Total companies comparison
-    charts.comparisonTotal = new Chart(document.getElementById('comparisonTotal'), {
-        type: 'bar',
-        data: {
-            labels: ['ESG', 'TCFD'],
-            datasets: [{
-                label: currentLang === 'ar' ? 'عدد الشركات' : 'Number of Companies',
-                data: [esgData.totalCompanies, tcfdData.totalCompanies],
-                backgroundColor: ['#2196F3', '#4A8B5C']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+    // Comparison data
+    const esgNonListed = [4, 25, 30, 40, 50];
+    const tcfdNonListed = [0, 1, 11, 16, 20];
+    const esgListed = [10, 24, 40, 50, 100];
+    const tcfdListed = [7, 15, 20, 30, 50];
     
-    // Rating distribution comparison
-    const esgTotals = [
-        14, // excellent
-        49, // very good
-        70, // good
-        90, // acceptable
-        150 // needs improvement
-    ];
-    
-    const tcfdTotals = [
-        7, // excellent
-        16, // very good
-        31, // good
-        46, // acceptable
-        70 // needs improvement
-    ];
-    
-    charts.comparisonRatings = new Chart(document.getElementById('comparisonRatings'), {
+    // Non-listed companies comparison
+    charts.comparisonNonListed = new Chart(document.getElementById('comparisonNonListed'), {
         type: 'bar',
         data: {
             labels: ratingLabels[currentLang],
             datasets: [
                 {
                     label: 'ESG',
-                    data: esgTotals,
-                    backgroundColor: '#2196F3'
+                    data: esgNonListed,
+                    backgroundColor: '#005D87'
                 },
                 {
                     label: 'TCFD',
-                    data: tcfdTotals,
-                    backgroundColor: '#4A8B5C'
+                    data: tcfdNonListed,
+                    backgroundColor: '#002060'
                 }
             ]
         },
@@ -721,24 +925,21 @@ function createComparisonCharts() {
         }
     });
     
-    // Percentage comparison
-    const esgPercentages = esgTotals.map(v => (v / esgData.totalCompanies * 100).toFixed(1));
-    const tcfdPercentages = tcfdTotals.map(v => (v / tcfdData.totalCompanies * 100).toFixed(1));
-    
-    charts.comparisonPercent = new Chart(document.getElementById('comparisonPercent'), {
+    // Listed companies comparison
+    charts.comparisonListed = new Chart(document.getElementById('comparisonListed'), {
         type: 'bar',
         data: {
             labels: ratingLabels[currentLang],
             datasets: [
                 {
-                    label: 'ESG %',
-                    data: esgPercentages,
-                    backgroundColor: '#2196F3'
+                    label: 'ESG',
+                    data: esgListed,
+                    backgroundColor: '#005D87'
                 },
                 {
-                    label: 'TCFD %',
-                    data: tcfdPercentages,
-                    backgroundColor: '#4A8B5C'
+                    label: 'TCFD',
+                    data: tcfdListed,
+                    backgroundColor: '#002060'
                 }
             ]
         },
@@ -749,13 +950,6 @@ function createComparisonCharts() {
                 legend: {
                     position: 'top',
                     rtl: currentLang === 'ar'
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label}: ${context.parsed.y}%`;
-                        }
-                    }
                 }
             },
             scales: {
@@ -763,12 +957,7 @@ function createComparisonCharts() {
                     reverse: currentLang === 'ar'
                 },
                 y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value + '%';
-                        }
-                    }
+                    beginAtZero: true
                 }
             }
         }
