@@ -364,7 +364,7 @@ function createESGCharts() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: currentLang === 'ar' ? 'right' : 'left',
+                    position: 'top',
                     rtl: currentLang === 'ar',
                     labels: {
                         font: {
@@ -391,13 +391,35 @@ function createESGCharts() {
         }
     });
     
-    // Sectors bar chart
+    // Sectors bar chart - ensure column order: Excellent, Very Good, Good, Fair, Needs Improvement
     const sectorLabels = esgData.nonListedSectors.map(s => currentLang === 'ar' ? s.nameAr : s.nameEn);
-    const datasets = ratingLabels[currentLang].map((label, idx) => ({
-        label: label,
-        data: esgData.nonListedSectors.map(s => s.ratings[idx]),
-        backgroundColor: ratingColors[idx]
-    }));
+    const datasets = [
+        {
+            label: ratingLabels[currentLang][0], // Excellent
+            data: esgData.nonListedSectors.map(s => s.ratings[0]),
+            backgroundColor: ratingColors[0]
+        },
+        {
+            label: ratingLabels[currentLang][1], // Very Good
+            data: esgData.nonListedSectors.map(s => s.ratings[1]),
+            backgroundColor: ratingColors[1]
+        },
+        {
+            label: ratingLabels[currentLang][2], // Good
+            data: esgData.nonListedSectors.map(s => s.ratings[2]),
+            backgroundColor: ratingColors[2]
+        },
+        {
+            label: ratingLabels[currentLang][3], // Fair
+            data: esgData.nonListedSectors.map(s => s.ratings[3]),
+            backgroundColor: ratingColors[3]
+        },
+        {
+            label: ratingLabels[currentLang][4], // Needs Improvement
+            data: esgData.nonListedSectors.map(s => s.ratings[4]),
+            backgroundColor: ratingColors[4]
+        }
+    ];
     
     charts.esgSectorsBar = new Chart(document.getElementById('esgSectorsBar'), {
         type: 'bar',
@@ -448,7 +470,7 @@ function createESGCharts() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: currentLang === 'ar' ? 'right' : 'left',
+                    position: 'top',
                     rtl: currentLang === 'ar',
                     labels: {
                         font: {
@@ -711,7 +733,7 @@ function createTCFDCharts() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: currentLang === 'ar' ? 'right' : 'left',
+                    position: 'top',
                     rtl: currentLang === 'ar',
                     labels: {
                         font: {
@@ -739,12 +761,64 @@ function createTCFDCharts() {
     });
     
     // All sectors grouped bar chart
+    // Special handling: In Arabic, columns display RTL (reversed order)
+    // In English, columns display LTR (normal order)
     const allSectorsLabels = tcfdData.allSectors.map(s => currentLang === 'ar' ? s.nameAr : s.nameEn);
-    const allSectorsDatasets = ratingLabels[currentLang].map((label, idx) => ({
-        label: label,
-        data: tcfdData.allSectors.map(s => s.ratings[idx]),
-        backgroundColor: ratingColors[idx]
-    }));
+    
+    // Create datasets in reverse order for Arabic to achieve RTL column display
+    const allSectorsDatasets = currentLang === 'ar' ? [
+        {
+            label: ratingLabels[currentLang][4], // Needs Improvement (rightmost)
+            data: tcfdData.allSectors.map(s => s.ratings[4]),
+            backgroundColor: ratingColors[4]
+        },
+        {
+            label: ratingLabels[currentLang][3], // Fair
+            data: tcfdData.allSectors.map(s => s.ratings[3]),
+            backgroundColor: ratingColors[3]
+        },
+        {
+            label: ratingLabels[currentLang][2], // Good
+            data: tcfdData.allSectors.map(s => s.ratings[2]),
+            backgroundColor: ratingColors[2]
+        },
+        {
+            label: ratingLabels[currentLang][1], // Very Good
+            data: tcfdData.allSectors.map(s => s.ratings[1]),
+            backgroundColor: ratingColors[1]
+        },
+        {
+            label: ratingLabels[currentLang][0], // Excellent (leftmost)
+            data: tcfdData.allSectors.map(s => s.ratings[0]),
+            backgroundColor: ratingColors[0]
+        }
+    ] : [
+        {
+            label: ratingLabels[currentLang][0], // Excellent (leftmost)
+            data: tcfdData.allSectors.map(s => s.ratings[0]),
+            backgroundColor: ratingColors[0]
+        },
+        {
+            label: ratingLabels[currentLang][1], // Very Good
+            data: tcfdData.allSectors.map(s => s.ratings[1]),
+            backgroundColor: ratingColors[1]
+        },
+        {
+            label: ratingLabels[currentLang][2], // Good
+            data: tcfdData.allSectors.map(s => s.ratings[2]),
+            backgroundColor: ratingColors[2]
+        },
+        {
+            label: ratingLabels[currentLang][3], // Fair
+            data: tcfdData.allSectors.map(s => s.ratings[3]),
+            backgroundColor: ratingColors[3]
+        },
+        {
+            label: ratingLabels[currentLang][4], // Needs Improvement (rightmost)
+            data: tcfdData.allSectors.map(s => s.ratings[4]),
+            backgroundColor: ratingColors[4]
+        }
+    ];
     
     charts.tcfdAllSectors = new Chart(document.getElementById('tcfdAllSectors'), {
         type: 'bar',
@@ -795,7 +869,7 @@ function createTCFDCharts() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: currentLang === 'ar' ? 'right' : 'left',
+                    position: 'top',
                     rtl: currentLang === 'ar',
                     labels: {
                         font: {
@@ -887,20 +961,20 @@ function createComparisonCharts() {
     const esgListed = [10, 24, 40, 50, 100];
     const tcfdListed = [7, 15, 20, 30, 50];
     
-    // Non-listed companies comparison
+    // Non-listed companies comparison - data already in correct order
     charts.comparisonNonListed = new Chart(document.getElementById('comparisonNonListed'), {
         type: 'bar',
         data: {
-            labels: ratingLabels[currentLang],
+            labels: ratingLabels[currentLang], // Order: Excellent, Very Good, Good, Fair, Needs Improvement
             datasets: [
                 {
                     label: 'ESG',
-                    data: esgNonListed,
+                    data: esgNonListed, // [4, 25, 30, 40, 50] - correct order
                     backgroundColor: '#005D87'
                 },
                 {
                     label: 'TCFD',
-                    data: tcfdNonListed,
+                    data: tcfdNonListed, // [0, 1, 11, 16, 20] - correct order
                     backgroundColor: '#002060'
                 }
             ]
@@ -925,20 +999,20 @@ function createComparisonCharts() {
         }
     });
     
-    // Listed companies comparison
+    // Listed companies comparison - data already in correct order
     charts.comparisonListed = new Chart(document.getElementById('comparisonListed'), {
         type: 'bar',
         data: {
-            labels: ratingLabels[currentLang],
+            labels: ratingLabels[currentLang], // Order: Excellent, Very Good, Good, Fair, Needs Improvement
             datasets: [
                 {
                     label: 'ESG',
-                    data: esgListed,
+                    data: esgListed, // [10, 24, 40, 50, 100] - correct order
                     backgroundColor: '#005D87'
                 },
                 {
                     label: 'TCFD',
-                    data: tcfdListed,
+                    data: tcfdListed, // [7, 15, 20, 30, 50] - correct order
                     backgroundColor: '#002060'
                 }
             ]

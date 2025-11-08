@@ -205,18 +205,170 @@ body::before {
   animation-duration: 28s;
 }
 
+/* Leaf particles - representing forests and growth */
+.particle.leaf {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(ellipse, rgba(124, 179, 66, 0.4), rgba(45, 95, 63, 0.2));
+  border-radius: 0 100% 0 100%;
+  animation: floatUp 15s infinite ease-in-out;
+}
+
+.particle.leaf:nth-child(6) {
+  left: 15%;
+  animation-delay: 0s;
+  animation-duration: 18s;
+}
+
+.particle.leaf:nth-child(7) {
+  left: 55%;
+  animation-delay: 5s;
+  animation-duration: 20s;
+}
+
+.particle.leaf:nth-child(8) {
+  left: 85%;
+  animation-delay: 10s;
+  animation-duration: 16s;
+}
+
+/* Water droplets - representing clean water */
+.particle.water {
+  width: 50px;
+  height: 70px;
+  background: radial-gradient(ellipse, rgba(33, 128, 141, 0.4), transparent);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  animation: floatUp 12s infinite ease-in;
+}
+
+.particle.water:nth-child(9) {
+  left: 25%;
+  animation-delay: 2s;
+  animation-duration: 14s;
+}
+
+.particle.water:nth-child(10) {
+  left: 65%;
+  animation-delay: 8s;
+  animation-duration: 13s;
+}
+
+.particle.water:nth-child(11) {
+  left: 45%;
+  animation-delay: 12s;
+  animation-duration: 15s;
+}
+
+/* Energy particles - representing clean energy */
+.particle.energy {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(141, 202, 77, 0.35), transparent);
+  animation: pulse 4s infinite ease-in-out;
+}
+
+.particle.energy:nth-child(12) {
+  left: 10%;
+  top: 40%;
+  animation-delay: 0s;
+}
+
+.particle.energy:nth-child(13) {
+  left: 75%;
+  top: 65%;
+  animation-delay: 2s;
+}
+
+/* Earth particles - representing sustainable earth */
+.particle.earth {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(45, 95, 63, 0.3), rgba(124, 179, 66, 0.3));
+  animation: wave 20s infinite ease-in-out;
+}
+
+.particle.earth:nth-child(14) {
+  left: 30%;
+  top: 20%;
+  animation-delay: 3s;
+}
+
+.particle.earth:nth-child(15) {
+  left: 70%;
+  top: 50%;
+  animation-delay: 8s;
+  animation-duration: 25s;
+}
+
 @keyframes float {
   0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(100px, -80px) scale(1.2) rotate(90deg);
+  }
+  50% {
+    transform: translate(-80px, -120px) scale(0.8) rotate(180deg);
+  }
+  75% {
+    transform: translate(-100px, -60px) scale(1.1) rotate(270deg);
+  }
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100vh) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes floatSide {
+  0%, 100% {
+    transform: translateX(-100px) rotate(0deg);
+  }
+  50% {
+    transform: translateX(100px) rotate(180deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.4;
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
     transform: translate(0, 0) rotate(0deg);
   }
   25% {
-    transform: translate(30px, -50px) rotate(90deg);
+    border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+    transform: translate(50px, 50px) rotate(90deg);
   }
   50% {
-    transform: translate(-20px, -80px) rotate(180deg);
+    border-radius: 30% 60% 70% 40% / 60% 30% 70% 40%;
+    transform: translate(-50px, 100px) rotate(180deg);
   }
   75% {
-    transform: translate(-40px, -30px) rotate(270deg);
+    border-radius: 70% 30% 40% 60% / 40% 70% 30% 60%;
+    transform: translate(-100px, 50px) rotate(270deg);
   }
 }
 
@@ -590,6 +742,16 @@ body::before {
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle leaf"></div>
+        <div class="particle leaf"></div>
+        <div class="particle leaf"></div>
+        <div class="particle water"></div>
+        <div class="particle water"></div>
+        <div class="particle water"></div>
+        <div class="particle energy"></div>
+        <div class="particle energy"></div>
+        <div class="particle earth"></div>
+        <div class="particle earth"></div>
     </div>
     <div class="container">
         <!-- Header -->
