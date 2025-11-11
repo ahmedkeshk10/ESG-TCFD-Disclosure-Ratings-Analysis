@@ -5,38 +5,38 @@ let charts = {};
 // Data
 const esgData = {
     totalCompanies: 373,
-    nonListedTotal: 149,
+    nonListedTotal: 158,
     nonListedRatings: {
-        excellent: 4,
-        veryGood: 25,
-        good: 30,
-        acceptable: 40,
-        needsImprovement: 50
+        excellent: 8,
+        veryGood: 7,
+        good: 49,
+        acceptable: 55,
+        needsImprovement: 39
     },
     nonListedSectors: [
-        { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [2, 6, 2, 3, 5] },
-        { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [4, 1, 5, 2, 6] },
-        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [2, 2, 4, 3, 5] },
-        { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [3, 5, 3, 6, 5] },
-        { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [2, 2, 6, 3, 2] },
-        { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [3, 3, 4, 6, 2] },
-        { nameAr: 'قطاع التمويل متناهي الصغر', nameEn: 'Microfinance', icon: '🤝', ratings: [7, 9, 9, 9, 10] }
+        { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [4, 3, 5, 16, 14] },
+        { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [0, 1, 13, 16, 4] },
+        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [2, 0, 4, 2, 5] },
+        { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [1, 1, 8, 6, 4] },
+        { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [0, 0, 2, 2, 0] },
+        { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [1, 1, 11, 8, 8] },
+        { nameAr: 'قطاع التمويل متناهي الصغر', nameEn: 'Microfinance', icon: '🤝', ratings: [0, 1, 6, 5, 4] }
     ],
-    listedTotal: 224,
+    listedTotal: 215,
     listedRatings: {
-        excellent: 10,
-        veryGood: 24,
-        good: 40,
-        acceptable: 50,
-        needsImprovement: 100
+        excellent: 4,
+        veryGood: 13,
+        good: 46,
+        acceptable: 104,
+        needsImprovement: 48
     },
-    listedNonBanking: [5, 10, 20, 15, 6],
-    listedOtherSectors: [8, 20, 30, 40, 70]
+    listedNonBanking: [2, 0, 6, 14, 8],
+    listedOtherSectors: [2, 13, 40, 90, 40]
 };
 
 const tcfdData = {
-    totalCompanies: 169,
-    nonListedTotal: 47,
+    totalCompanies: 167,
+    nonListedTotal: 48,
     nonListedRatings: {
         excellent: 0,
         veryGood: 1,
@@ -45,24 +45,24 @@ const tcfdData = {
         needsImprovement: 20
     },
     allSectors: [
-        { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [1, 1, 0, 1, 1] },
-        { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [0, 1, 1, 1, 1] },
-        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [1, 0, 1, 1, 1] },
-        { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [1, 1, 1, 1, 1] },
-        { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [0, 1, 1, 0, 1] },
-        { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [1, 1, 1, 1, 0] },
-        { nameAr: 'قطاع التمويل متناهي الصغر', nameEn: 'Microfinance', icon: '🤝', ratings: [3, 3, 4, 3, 5] }
+        { nameAr: 'قطاع سوق المال', nameEn: 'Capital Market', icon: '📈', ratings: [0, 0, 4, 3, 6] },
+        { nameAr: 'قطاع التأمين', nameEn: 'Insurance', icon: '🛡️', ratings: [0, 0, 3, 6, 3] },
+        { nameAr: 'قطاع التمويل العقاري', nameEn: 'Mortgage Finance', icon: '🏠', ratings: [0, 1, 1, 0, 1] },
+        { nameAr: 'قطاع التمويل الاستهلاكي', nameEn: 'Consumer Finance', icon: '💳', ratings: [0, 0, 2, 1, 1] },
+        { nameAr: 'قطاع التخصيم', nameEn: 'Factoring', icon: '📋', ratings: [0, 0, 0, 0, 2] },
+        { nameAr: 'قطاع التأجير التمويلي', nameEn: 'Leasing', icon: '🚗', ratings: [0, 0, 1, 5, 5] },
+        { nameAr: 'قطاع التمويل متناهي الصغر', nameEn: 'Microfinance', icon: '🤝', ratings: [0, 0, 0, 1, 2] }
     ],
-    listedTotal: 122,
+    listedTotal: 119,
     listedRatings: {
-        excellent: 7,
-        veryGood: 15,
-        good: 20,
-        acceptable: 30,
-        needsImprovement: 50
+        excellent: 5,
+        veryGood: 7,
+        good: 15,
+        acceptable: 49,
+        needsImprovement: 43
     },
-    listedNonBanking: [2, 5, 5, 10, 20],
-    listedOtherSectors: [5, 10, 15, 20, 30]
+    listedNonBanking: [1, 0, 1, 6, 8],
+    listedOtherSectors: [4, 7, 14, 43, 35]
 };
 
 const ratingLabels = {
@@ -152,10 +152,10 @@ const translations = {
 };
 
 const ratingIcons = {
-    excellent: '⭐',
-    veryGood: '✨',
-    good: '👍',
-    acceptable: '✓',
+    excellent: '⭐⭐⭐⭐',
+    veryGood: '⭐⭐⭐',
+    good: '⭐⭐',
+    acceptable: '⭐',
     needsImprovement: '⚠️',
     total: '📊'
 };
@@ -264,11 +264,11 @@ function createESGSummary() {
     
     const summaryData = [
         { label: t.totalCompanies, value: esgData.totalCompanies, icon: ratingIcons.total, color: '#1976D2' },
-        { label: t.excellent, value: 14, icon: ratingIcons.excellent, color: colors.excellent },
-        { label: t.veryGood, value: 49, icon: ratingIcons.veryGood, color: colors.veryGood },
-        { label: t.good, value: 70, icon: ratingIcons.good, color: colors.good },
-        { label: t.acceptable, value: 90, icon: ratingIcons.acceptable, color: colors.acceptable },
-        { label: t.needsImprovement, value: 150, icon: ratingIcons.needsImprovement, color: colors.needsImprovement }
+        { label: t.excellent, value: 12, icon: ratingIcons.excellent, color: colors.excellent },
+        { label: t.veryGood, value: 20, icon: ratingIcons.veryGood, color: colors.veryGood },
+        { label: t.good, value: 95, icon: ratingIcons.good, color: colors.good },
+        { label: t.acceptable, value: 159, icon: ratingIcons.acceptable, color: colors.acceptable },
+        { label: t.needsImprovement, value: 87, icon: ratingIcons.needsImprovement, color: colors.needsImprovement }
     ];
     
     container.innerHTML = summaryData.map(item => `
@@ -286,11 +286,11 @@ function createTCFDSummary() {
     
     const summaryData = [
         { label: t.totalCompanies, value: tcfdData.totalCompanies, icon: ratingIcons.total, color: '#1976D2' },
-        { label: t.excellent, value: 7, icon: ratingIcons.excellent, color: colors.excellent },
-        { label: t.veryGood, value: 16, icon: ratingIcons.veryGood, color: colors.veryGood },
+        { label: t.excellent, value: 5, icon: ratingIcons.excellent, color: colors.excellent },
+        { label: t.veryGood, value: 8, icon: ratingIcons.veryGood, color: colors.veryGood },
         { label: t.good, value: 26, icon: ratingIcons.good, color: colors.good },
-        { label: t.acceptable, value: 46, icon: ratingIcons.acceptable, color: colors.acceptable },
-        { label: t.needsImprovement, value: 70, icon: ratingIcons.needsImprovement, color: colors.needsImprovement }
+        { label: t.acceptable, value: 65, icon: ratingIcons.acceptable, color: colors.acceptable },
+        { label: t.needsImprovement, value: 63, icon: ratingIcons.needsImprovement, color: colors.needsImprovement }
     ];
     
     container.innerHTML = summaryData.map(item => `
@@ -309,19 +309,19 @@ function createComparisonSummary() {
     const t = translations[currentLang];
     
     const esgData = [
-        { label: t.excellent, value: 14, icon: '⭐', color: colors.excellent },
-        { label: t.veryGood, value: 49, icon: '✨', color: colors.veryGood },
-        { label: t.good, value: 70, icon: '👍', color: colors.good },
-        { label: t.acceptable, value: 90, icon: '✓', color: colors.acceptable },
-        { label: t.needsImprovement, value: 150, icon: '⚠️', color: colors.needsImprovement }
+        { label: t.excellent, value: 12, icon: '⭐⭐⭐⭐', color: colors.excellent },
+        { label: t.veryGood, value: 20, icon: '⭐⭐⭐', color: colors.veryGood },
+        { label: t.good, value: 95, icon: '⭐⭐', color: colors.good },
+        { label: t.acceptable, value: 159, icon: '⭐', color: colors.acceptable },
+        { label: t.needsImprovement, value: 87, icon: '⚠️', color: colors.needsImprovement }
     ];
     
     const tcfdData = [
-        { label: t.excellent, value: 7, icon: '⭐', color: colors.excellent },
-        { label: t.veryGood, value: 16, icon: '✨', color: colors.veryGood },
-        { label: t.good, value: 26, icon: '👍', color: colors.good },
-        { label: t.acceptable, value: 46, icon: '✓', color: colors.acceptable },
-        { label: t.needsImprovement, value: 70, icon: '⚠️', color: colors.needsImprovement }
+        { label: t.excellent, value: 5, icon: '⭐⭐⭐⭐', color: colors.excellent },
+        { label: t.veryGood, value: 8, icon: '⭐⭐⭐', color: colors.veryGood },
+        { label: t.good, value: 26, icon: '⭐⭐', color: colors.good },
+        { label: t.acceptable, value: 65, icon: '⭐', color: colors.acceptable },
+        { label: t.needsImprovement, value: 63, icon: '⚠️', color: colors.needsImprovement }
     ];
     
     esgContainer.innerHTML = esgData.map(item => `
@@ -956,10 +956,10 @@ function createTCFDCharts() {
 // Comparison Charts
 function createComparisonCharts() {
     // Comparison data
-    const esgNonListed = [4, 25, 30, 40, 50];
+    const esgNonListed = [8, 7, 49, 55, 39];
     const tcfdNonListed = [0, 1, 11, 16, 20];
-    const esgListed = [10, 24, 40, 50, 100];
-    const tcfdListed = [7, 15, 20, 30, 50];
+    const esgListed = [4, 13, 46, 104, 48];
+    const tcfdListed = [5, 7, 15, 49, 43];
     
     // Non-listed companies comparison - data already in correct order
     charts.comparisonNonListed = new Chart(document.getElementById('comparisonNonListed'), {
@@ -1012,7 +1012,7 @@ function createComparisonCharts() {
                 },
                 {
                     label: 'TCFD',
-                    data: tcfdListed, // [7, 15, 20, 30, 50] - correct order
+                    data: tcfdListed, // [5, 7, 15, 49, 43] - correct order
                     backgroundColor: '#002060'
                 }
             ]
